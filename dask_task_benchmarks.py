@@ -4,8 +4,10 @@ from dask.distributed import Client, wait
 import dask.array as da
 import math
 
-num_cores = int(sys.argv[1])
-print("machines:", num_cores)
+num_machines = int(sys.argv[1])
+print("machines:", num_machines)
+num_cores = 4*num_machines # each machine has 4 cores
+print("cores:", num_cores)
 
 # inspired in part by https://matthewrocklin.com/blog/work/2017/07/03/scaling
 def add(a, b):
