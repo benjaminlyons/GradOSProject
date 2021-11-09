@@ -5,7 +5,7 @@ import dask.array as da
 import math
 
 num_cores = int(sys.argv[1])
-print("cores:", num_cores)
+print("machines:", num_cores)
 
 # inspired in part by https://matthewrocklin.com/blog/work/2017/07/03/scaling
 def add(a, b):
@@ -17,8 +17,8 @@ def increment(x):
 client = Client("tcp://10.32.85.47:8790")
 
 # parallel calculations
-start = time.time()
 N = 2**10*num_cores
+start = time.time()
 futures = client.map(increment, range(N))
 result = client.gather(futures)
 stop = time.time()
@@ -45,8 +45,8 @@ data = range(2**10*num_cores)
 start = time.time()
 data = client.map(add, data[:-1], data[1:])
 data = client.map(add, data[:-1], data[1:])
-stop = time.time()
 result = client.gather(data)
+stop = time.time()
 f = open("adds.csv", "a")
 throughput = N / (stop - start)
 f.write(str(num_cores) + "," + str(throughput) + "\n")
