@@ -75,3 +75,11 @@ function task_benchmark_run(){
 		condor_rm $JOB_NUM
 	done
 }
+
+function task_benchmark_run_workers(){
+	workers=$1
+	JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
+	sleep 10
+	python dask_task_benchmarks.py $workers
+	condor_rm $JOB_NUM
+}
