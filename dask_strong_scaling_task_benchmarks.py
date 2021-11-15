@@ -36,7 +36,7 @@ start = time.time()
 futures = client.map(increment, range(N_short))
 result = client.gather(futures)
 stop = time.time()
-throughput_short = N_short / (stop - start)
+performance_short =  (stop - start)
 
 #medium
 start = time.time()
@@ -46,10 +46,10 @@ stop = time.time()
 
 #output
 f = open("strong_increment.csv", "a")
-throughput_long = N_medium / (stop - start)
-f.write(str(num_cores) + "," + str(throughput_short) + "," + str(throughput_long) + "\n")
+performance_long =  (stop - start)
+f.write(str(num_cores) + "," + str(performance_short) + "," + str(performance_long) + "\n")
 f.close()
-print("Increment:", str(throughput_short), 's')
+print("Increment:", str(performance_short), 's')
 
 # tree reduction - sum list
 N_short = 2**14
@@ -61,7 +61,7 @@ while len(data) > 1:
         data = [ delayed(add)(a,b) for a, b in zip(data[::2], data[1::2]) ]
 print(data[0].compute())
 stop = time.time()
-throughput_short = N_short / (stop - start)
+performance_short =  (stop - start)
 
 #medium
 data = range(N_medium)
@@ -73,10 +73,10 @@ stop = time.time()
 
 #output
 f = open("strong_sum.csv", "a")
-throughput_long = N_medium / (stop - start)
-f.write(str(num_cores) + "," + str(throughput_short) + "," + str(throughput_long) + "\n")
+performance_long =  (stop - start)
+f.write(str(num_cores) + "," + str(performance_short) + "," + str(performance_long) + "\n")
 f.close()
-print("Sum list:", str(throughput_short), 's')
+print("Sum list:", str(performance_short), 's')
 
 # some shared data
 N_short = 2**14
@@ -89,7 +89,7 @@ data = client.map(add, data[:-1], data[1:])
 data = client.map(add, data[:-1], data[1:])
 result = client.gather(data)
 stop = time.time()
-throughput_short = N_short / (stop - start)
+performance_short =  (stop - start)
 
 #medium
 data = range(N_medium)
@@ -101,10 +101,10 @@ stop = time.time()
 
 #output
 f = open("strong_adds.csv", "a")
-throughput_long = N_medium / (stop - start)
-f.write(str(num_cores) + "," + str(throughput_short)  + "," + str(throughput_long) +  "\n")
+performance_long =  (stop - start)
+f.write(str(num_cores) + "," + str(performance_short)  + "," + str(performance_long) +  "\n")
 f.close()
-print("Shared Adds:", str(throughput_short), 's')
+print("Shared Adds:", str(performance_short), 's')
 
 # purely sequential calculations
 a = 1
@@ -114,7 +114,7 @@ for i in range(N_short):
         a = client.submit(increment, a)
 a = client.gather(a)
 stop = time.time()
-throughput_short = N_short / (stop - start)
+performance_short =  (stop - start)
 
 # medium
 N_medium = 100
@@ -124,11 +124,10 @@ for i in range(N_medium):
 a = client.gather(a)
 stop = time.time()
 f = open("strong_sequential.csv", "a")
-throughput_long = N_medium / (stop - start)
-f.write(str(num_cores) + "," + str(throughput_short)  + "," + str(throughput_long) +  "\n")
-f.write(str(num_cores) + "," + str(throughput_short)  + "," + str(throughput_long)+ "\n")
+performance_long =  (stop - start)
+f.write(str(num_cores) + "," + str(performance_short)  + "," + str(performance_long)+ "\n")
 f.close()
-print("Sequential:", str(throughput_short), 's')
+print("Sequential:", str(performance_short), 's')
 
 
 

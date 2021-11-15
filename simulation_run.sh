@@ -68,7 +68,7 @@ EOF
 }
 
 function task_benchmark_run(){
-	for workers in {10..100..10}; do
+	for workers in {1 2 3 4 5 6 7 8 9 10 15 20 25 30 35 40 45 50 55 60 70 80 90 100}; do
 		JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
 		sleep 10
 		python dask_task_benchmarks.py $workers
@@ -88,7 +88,7 @@ function task_strong_benchmark_run(){
 	for workers in {10..100..10}; do
 		JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
 		sleep 10
-		python dask_task_benchmarks.py $workers
+		python dask_strong_scaling_task_benchmarks.py $workers
 		condor_rm $JOB_NUM
 	done
 }

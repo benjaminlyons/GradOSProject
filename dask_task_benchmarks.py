@@ -65,7 +65,7 @@ throughput_short = N_short / (stop - start)
 
 #medium
 N_medium = 2**7 * num_cores
-data = range(N_short)
+data = range(N_medium)
 start = time.time()
 while len(data) > 1:
         data = [ delayed(add)(a,b) for a, b in zip(data[::2], data[1::2]) ]
