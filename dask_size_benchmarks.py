@@ -10,25 +10,27 @@ print("machines:", num_machines)
 num_cores = 4*num_machines # each machine has 4 cores
 print("cores:", num_cores)
 
-def sum_list(l):
+client = Client("tcp://10.32.85.31:8791")
+def func(l):
         time.sleep(0.1)
         return sum(l)
 
 # define small list size
-N_small = 1000 # 8 KB?
-N_medium = 1000*N_small # 8 MB?
-N_large = 20*N_medium # 160 MB
+N_small = 25
+N_medium = 4000 
+N_large = 25000
 
-data_small = range(N_small)
-data_medium = range(N_medium)
-data_large = range(N_large)
+data_small = [ i for i in range(N_small) ]
+data_medium = [ i for i in  range(N_medium) ]
+data_large = [ i for i in range(N_large) ]
 
 # small
 num_tasks_small = 200*num_cores
 futures = []
 start = time.time()
 for i in range(num_tasks_small):
-        future = client.submit(sum_list, data_small)
+        data_small[0] = i
+        future = client.submit(func, data_small)
         futures.append(future)
 client.gather(futures)
 stop = time.time()
@@ -39,7 +41,8 @@ num_tasks_medium = 10*num_cores
 futures = []
 start = time.time()
 for i in range(num_tasks_medium):
-        future = client.submit(sum_list, data_medium)
+        data_medium[0] = i
+        future = client.submit(func, data_medium)
         futures.append(future)
 client.gather(futures)
 stop = time.time()
@@ -50,7 +53,8 @@ num_tasks_large = 4*num_cores
 futures = []
 start = time.time()
 for i in range(num_tasks_large):
-        future = client.submit(sum_list, data_large)
+        data_large[0] = i
+        future = client.submit(func, data_large)
         futures.append(future)
 client.gather(futures)
 stop = time.time()
