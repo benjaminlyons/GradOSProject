@@ -28,8 +28,8 @@ def delayed_increment(x):
 client = Client("tcp://10.32.85.31:8790")
 
 # parallel calculations
-N_short = 2**8*num_cores
-N_medium = 2**7*num_cores
+N_short = 2**14
+N_medium = 2**12
 
 #short
 start = time.time()
@@ -45,14 +45,14 @@ result = client.gather(futures)
 stop = time.time()
 
 #output
-f = open("increment.csv", "a")
+f = open("strong_increment.csv", "a")
 throughput_long = N_medium / (stop - start)
 f.write(str(num_cores) + "," + str(throughput_short) + "," + str(throughput_long) + "\n")
 f.close()
 print("Increment:", str(throughput_short), 's')
 
 # tree reduction - sum list
-N_short = 2**7 * num_cores
+N_short = 2**14
 data = range(N_short)
 
 #short
@@ -64,23 +64,24 @@ stop = time.time()
 throughput_short = N_short / (stop - start)
 
 #medium
-N_medium = 2**7 * num_cores
-data = range(N_short)
+data = range(N_medium)
 start = time.time()
 while len(data) > 1:
         data = [ delayed(add)(a,b) for a, b in zip(data[::2], data[1::2]) ]
+print(data[0].compute())
 stop = time.time()
 
 #output
-f = open("sum.csv", "a")
+f = open("strong_sum.csv", "a")
 throughput_long = N_medium / (stop - start)
 f.write(str(num_cores) + "," + str(throughput_short) + "," + str(throughput_long) + "\n")
 f.close()
 print("Sum list:", str(throughput_short), 's')
 
 # some shared data
-N_short = 2**6*num_cores
+N_short = 2**14
 data = range(N_short)
+N_medium = 2**12
 
 #short
 start = time.time()
@@ -91,7 +92,6 @@ stop = time.time()
 throughput_short = N_short / (stop - start)
 
 #medium
-N_medium = 2**7 * num_cores
 data = range(N_medium)
 start = time.time()
 data = client.map(delayed_add, data[:-1], data[1:])
@@ -100,7 +100,7 @@ result = client.gather(data)
 stop = time.time()
 
 #output
-f = open("adds.csv", "a")
+f = open("strong_adds.csv", "a")
 throughput_long = N_medium / (stop - start)
 f.write(str(num_cores) + "," + str(throughput_short)  + "," + str(throughput_long) +  "\n")
 f.close()
@@ -123,9 +123,10 @@ for i in range(N_medium):
         a = client.submit(delayed_increment, a)
 a = client.gather(a)
 stop = time.time()
-f = open("sequential.csv", "a")
+f = open("strong_sequential.csv", "a")
 throughput_long = N_medium / (stop - start)
 f.write(str(num_cores) + "," + str(throughput_short)  + "," + str(throughput_long) +  "\n")
+f.write(str(num_cores) + "," + str(throughput_short)  + "," + str(throughput_long)+ "\n")
 f.close()
 print("Sequential:", str(throughput_short), 's')
 

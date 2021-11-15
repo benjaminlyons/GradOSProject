@@ -4,7 +4,7 @@ import pandas as pd
 import csv
 import numpy as np
 
-filenames = ["sum.csv", "adds.csv", "sequential.csv", "increment.csv"]
+filenames = ["strong_sum.csv", "strong_adds.csv", "strong_sequential.csv", "strong_increment.csv"]
 titles = ["Reduction", "Shared", "Sequential", "Parallel"]
 
 def extract_data(filename):
@@ -26,16 +26,14 @@ for i in range(len(filenames)):
         output_file = "{}.{}".format(filenames[i].replace('.csv', ''),'png')
 
         x = [ d[0] for d in data ]
-        y1 = [ d[1] for d in data ]
-        y2 = [ d[2] for d in data ]
+        y = [ d[1] for d in data ]
 
-        ax.plot(x, y1)
-        ax.plot(x, y2)
+        ax.plot(x, y)
         ax.set_title(title)
         ax.set_xlabel('cores')
         ax.set_ylabel('throughput (tasks/sec)')
         ax.set_xlim([0, max(x) + 10])
-        ax.set_ylim([0, max(max(y1) + max(y1)*.1, max(y2) + max(y2)*.1)])
+        ax.set_ylim([0, max(y) + max(y)*.1])
 
 plt.tight_layout()
 plt.show()

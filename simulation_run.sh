@@ -51,7 +51,7 @@ function dask_submit_workers(){
 	cat > condor_dask_submit_file <<EOF
 universe = vanilla
 executable = /scratch365/blyons1/grados-project/dask_submit.sh
-arguments = tcp://10.32.85.47:8790
+arguments = tcp://10.32.85.31:8790
 should_transfer_files = yes
 when_to_transfer_output = on_exit
 error = workers/worker.\$(Process).error
@@ -81,5 +81,22 @@ function task_benchmark_run_workers(){
 	JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
 	sleep 10
 	python dask_task_benchmarks.py $workers
+	condor_rm $JOB_NUM
+}
+
+function task_strong_benchmark_run(){
+	for workers in {10..100..10}; do
+		JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
+		sleep 10
+		python dask_task_benchmarks.py $workers
+		condor_rm $JOB_NUM
+	done
+}
+
+function task_strong_benchmark_run_workers(){
+	workers=$1
+	JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
+	sleep 10
+	python dask_strong_scaling_task_benchmarks.py $workers
 	condor_rm $JOB_NUM
 }
