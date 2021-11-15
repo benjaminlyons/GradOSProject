@@ -77,7 +77,7 @@ data = range(N_short)
 start = time.time()
 while len(data) > 1:
         data = [ delayed(add)(a,b) for a, b in zip(data[::2], data[1::2]) ]
-print(data[0].compute())
+data[0].compute()
 stop = time.time()
 throughput_short = N_short / (stop - start)
 
@@ -87,6 +87,7 @@ data = range(N_medium)
 start = time.time()
 while len(data) > 1:
         data = [ delayed(delayed_add)(a,b) for a, b in zip(data[::2], data[1::2]) ]
+data[0].compute()
 stop = time.time()
 throughput_medium = N_medium / (stop - start)
 
@@ -96,6 +97,7 @@ data = range(N_long)
 start = time.time()
 while len(data) > 1:
         data = [ delayed(long_add)(a,b) for a, b in zip(data[::2], data[1::2]) ]
+data[0].compute()
 stop = time.time()
 throughput_long = N_long / (stop - start)
 
