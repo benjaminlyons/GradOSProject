@@ -28,9 +28,11 @@ for i in range(len(filenames)):
         x = [ d[0] for d in data ]
         y1 = [ d[1] for d in data ]
         y2 = [ d[2] for d in data ]
+        y3 = [ d[3] for d in data ]
 
-        ax.plot(x, y1)
-        ax.plot(x, y2)
+        ax.plot(x, y1, label="fast task")
+        ax.plot(x, y2, label="100 ms / task")
+        ax.plot(x, y3, label="1 s / task")
         ax.set_title(title)
         ax.set_xlabel('cores')
         ax.set_ylabel('throughput (tasks/sec)')
