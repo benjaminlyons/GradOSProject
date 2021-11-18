@@ -67,11 +67,40 @@ EOF
 	echo $JOB_NUM
 }
 
+function dask_submit_workers_two(){
+	cat > condor_dask_submit_file <<EOF
+universe = vanilla
+executable = /scratch365/blyons1/grados-project/dask_submit.sh
+arguments = tcp://10.32.85.31:8791
+should_transfer_files = yes
+when_to_transfer_output = on_exit
+error = workers/worker.\$(Process).error
+output = workers/worker.\$(Process).output
+request_cpus = $2
+request_memory = $3
+request_disk = $4
++JobMaxSuspendTime = 0
+queue $1
+EOF
+	JOB_NUM=$(condor_submit condor_dask_submit_file | grep -Eo "[0-9]+\." | grep -Eo "[0-9]+")
+	check_workers_ready $1 $JOB_NUM
+	echo $JOB_NUM
+}
+
 function task_benchmark_run(){
 	for workers in 1 2 3 4 5 6 7 8 9 10 15 20 25 30 35 40 45 50 55 60 70 80 90 100; do
-		JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
+		JOB_NUM=$(dask_submit_workers_two $workers 4 16000 16000)
 		sleep 10
 		python dask_task_benchmarks.py $workers
+		condor_rm $JOB_NUM
+	done
+}
+
+function size_benchmark_run(){
+	for workers in 1 2 3 4 5 6 7 8 9 10 15 20 25 30 35 40 45 50 55 60 70 80 90 100; do
+		JOB_NUM=$(dask_submit_workers_two $workers 4 16000 16000)
+		sleep 10
+		python dask_size_benchmarks.py $workers
 		condor_rm $JOB_NUM
 	done
 }
@@ -99,4 +128,21 @@ function task_strong_benchmark_run_workers(){
 	sleep 10
 	python dask_strong_scaling_task_benchmarks.py $workers
 	condor_rm $JOB_NUM
+}
+
+function filesystem_benchmark_run(){
+	for workers in 1 2 3 4 5 6 7 8 9 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100; do
+		JOB_NUM=$(dask_submit_workers $workers 4 16000 16000)
+		sleep 30
+		python file_system_benchmark.py $workers
+		condor_rm $JOB_NUM
+		rm bible2.txt
+		cp bible1.txt bible2.txt
+	done
+}
+
+function filesystem_benchmark_full_run(){
+	for trial in {1..10}; do
+		filesystem_benchmark_run
+	done
 }
