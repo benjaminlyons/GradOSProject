@@ -13,7 +13,7 @@ print("cores:", num_cores)
 client = Client("tcp://10.32.85.31:8791")
 def func(l):
         time.sleep(0.1)
-        return sum(l)
+        return l[0]
 
 # define small list size
 N_small = 25
