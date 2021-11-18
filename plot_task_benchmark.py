@@ -19,6 +19,7 @@ def extract_data(filename):
         return data
 
 fig, axs = plt.subplots(2, 2)
+# plt.yscale('log')
 for i in range(len(filenames)):
         title = titles[i]
         ax = axs[i//2][i % 2]
@@ -30,17 +31,19 @@ for i in range(len(filenames)):
         y2 = [ d[2] for d in data ]
         y3 = [ d[3] for d in data ]
 
+        ax.set_yscale('log')
         ax.plot(x, y1, label="fast task")
         ax.plot(x, y2, label="100 ms / task")
         ax.plot(x, y3, label="1 s / task")
         ax.set_title(title)
         ax.set_xlabel('cores')
         ax.set_ylabel('throughput (tasks/sec)')
-        ax.set_xlim([0, max(x) + 10])
-        ax.set_ylim([0, max(max(y1) + max(y1)*.1, max(y2) + max(y2)*.1)])
+        ax.set_xlim([1, max(x) + 10])
+        ax.set_ylim([1, max(max(y1) + max(y1)*.1, max(y2) + max(y2)*.1)])
+        plt.legend()
 
 plt.tight_layout()
 plt.show()
-plt.savefig("output.png")
+plt.savefig("task_benchmarks.pdf")
 
 

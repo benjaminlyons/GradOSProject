@@ -30,6 +30,7 @@ y3 = [ d[3] for d in data ]
 ax.plot(x, y1, label="small")
 ax.plot(x, y2, label="medium")
 ax.plot(x, y3, label="large")
+ax.set_yscale('log')
 ax.set_title(title)
 ax.set_xlabel('cores')
 ax.set_ylabel('throughput (tasks/sec)')
@@ -37,7 +38,8 @@ ax.set_xlim([0, max(x) + 10])
 ax.set_ylim([0, max(max(y1) + max(y1)*.1, max(y2) + max(y2)*.1)])
 
 plt.tight_layout()
+plt.legend()
 plt.show()
-plt.savefig("size.png")
+plt.savefig("size.pdf")
 
 

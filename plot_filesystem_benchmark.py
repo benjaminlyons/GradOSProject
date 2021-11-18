@@ -34,6 +34,6 @@ ax.set_ylim([0, max(y1) + max(y1)*.1])
 
 plt.tight_layout()
 plt.show()
-plt.savefig("filesystem.png")
+plt.savefig("filesystem.pdf")
 
 
