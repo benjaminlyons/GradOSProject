@@ -14,7 +14,7 @@ print("cores:", num_cores)
 #	problem_sizes = json.loads(problem_sizes.read())
 
 # WORKQUEUE SETUP
-q = wq.WorkQueue(name=f'wq-weak-benchmarks-tfisher4-{num_workers:03}')
+q = wq.WorkQueue(0, name=f'wq-weak-benchmarks-tfisher4-{num_workers:03}')
 
 # inspired in part by https://matthewrocklin.com/blog/work/2017/07/03/scaling
 def add(a, b):
@@ -66,7 +66,7 @@ for size, fxn in zip(pll_sizes, pll_fxns):
 	    #print(f'task {t.id} completed with result {t.output}')    
 	stop = time.time()
 	pll_throughputs.append(size / (stop - start))
-f = open(f"res/parallel-{num_workers:03}.csv", "a")
+f = open(f"res/wq-parallel-{num_workers:03}.csv", "a")
 f.write(str(num_cores) + ',' + ','.join(map(str, pll_throughputs)) + '\n')
 f.close()
 print("Parallel: ", ' | '.join(map(str, pll_throughputs)))
@@ -133,11 +133,7 @@ for size, fxn in zip(red_sizes, red_fxns):
 		reduce_tree[-1][0].result
 	)
 # output results to file
-f = open(f"res/reduction-{num_workers:03}.csv", "a")
-
-benchmarkfile="$1"
-benchmarkmgr="$2"
-task_benchmark_run "$benchmarkfile" "$benchmarkmgr"
+f = open(f"res/wq-reduction-{num_workers:03}.csv", "a")
 f.write(str(num_cores) + ',' + ','.join(map(str, red_throughputs)) + '\n')
 f.close()
 print("Reduction: ", ' | '.join(map(str, red_throughputs)))
@@ -189,7 +185,7 @@ for size, fxn in zip(shd_sizes, shd_fxns):
 	shd_throughputs.append(throughput)
 
 # output results to file
-f = open(f"res/shared-{num_workers:03}.csv", "a")
+f = open(f"res/wq-shared-{num_workers:03}.csv", "a")
 f.write(str(num_cores) + ',' + ','.join(map(str, shd_throughputs)) + '\n')
 f.close()
 print("Shared: ", ' | '.join(map(str, shd_throughputs)))
@@ -214,7 +210,7 @@ for size, fxn in zip(seq_sizes, seq_fxns):
 	stop = time.time()
 	throughput = size / (stop - start)
 	seq_throughputs.append(throughput)
-f = open(f"res/sequential-{num_workers:03}.csv", "a")
+f = open(f"res/wq-sequential-{num_workers:03}.csv", "a")
 f.write(str(num_cores) + ',' + ','.join(map(str, seq_throughputs)) + '\n')
 f.close()
 print("Sequential: ", ' | '.join(map(str, seq_throughputs)))
