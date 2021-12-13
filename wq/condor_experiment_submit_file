@@ -1,0 +1,15 @@
+universe = vanilla
+executable = wq_manager.sh
+arguments = "weak_benchmark /scratch365/tfisher4/grados-proj/data/trial2"
+
+should_transfer_files = yes
+transfer_input_files = wq_sim_run.sh,wq_weak_benchmarks.py,wq_size_benchmarks.py,wq_fs_benchmarks.py,wq_utils.py,just-dill.tar.gz
+when_to_transfer_output = on_exit
+error = /scratch365/tfisher4/grados-proj/workers/manager.$(Process).error
+output = /scratch365/tfisher4/grados-proj/workers/manager.$(Process).output
+
+request_cpus = 4
+request_memory = 16000
+request_disk = 16000
++JobMaxSuspendTime = 0
+queue 1
