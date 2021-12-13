@@ -1,0 +1,13 @@
+universe = vanilla
+executable = /scratch365/blyons1/grados-project/dask_submit.sh
+arguments = tcp://10.32.85.47:8790
+should_transfer_files = yes
+when_to_transfer_output = on_exit
+/* output = worker.$(Process).output */
+/* log = workers.log */
+/* error = worker.$(Process).error */
+request_cpus = 4
+request_memory = 16000
+request_disk = 16000
++JobMaxSuspendTime = 0
+queue 10

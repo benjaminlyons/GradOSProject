@@ -34,7 +34,7 @@ def long_increment(x):
         return x + 1
 
 
-client = Client("tcp://10.32.85.31:8791")
+client = Client("tcp://10.32.85.31:8790")
 
 # parallel calculations
 N_short = 2**8*num_cores
@@ -44,6 +44,8 @@ N_long = 4*num_cores
 #short
 start = time.time()
 futures = client.map(increment, range(N_short))
+# print(futures)
+# print(len(futures))
 result = client.gather(futures)
 stop = time.time()
 throughput_short = N_short / (stop - start)

@@ -35,7 +35,7 @@ for i in range(N):
 #tasks = [wq.PythonTask(increment, i).specify_cores(1).specify_memory(16).specify_disk(16) for i in range(N)]
 while not q.empty():
     t = q.wait() # block indefinitely: not doing other work in the meantime
-    print(f'task {t.id} completed with result {t.output}')
+    # print(f'task {t.id} completed with result {t.output}')
     
 stop = time.time()
 f = open("res/increment.csv", "a")

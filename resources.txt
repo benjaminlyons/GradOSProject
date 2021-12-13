@@ -1,0 +1,2 @@
+condor - each machine has 4 cores, 16GB memory, 16GB disk
+each work_queue_worker process should have 1 core, 4 GB memory, 4 GB disk space

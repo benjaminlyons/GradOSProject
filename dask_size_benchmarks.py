@@ -10,7 +10,7 @@ print("machines:", num_machines)
 num_cores = 4*num_machines # each machine has 4 cores
 print("cores:", num_cores)
 
-client = Client("tcp://10.32.85.31:8791")
+client = Client("tcp://10.32.85.31:8790")
 def func(l):
         time.sleep(0.1)
         return l[0]

@@ -8,10 +8,11 @@ MAX_RETRIES=75
 
 #module load conda
 #conda init
-source /opt/crc/c/conda/miniconda3/4.9.2/etc/profile.d/conda.sh
+# source /opt/crc/c/conda/miniconda3/4.9.2/etc/profile.d/conda.sh
 #source .bashrc
 #conda env create -f ~tfisher4/environment.yml
-conda activate grad-os-proj
+source /scratch365/blyons1/miniconda3/etc/profile.d/conda.sh
+conda activate os-project
 #function dask_scheduler_start(){
 #	dask-scheduler &> scheduler.log &
 #}

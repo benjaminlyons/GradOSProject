@@ -31,7 +31,7 @@ for i in range(len(filenames)):
         ax.plot(x, y)
         ax.set_title(title)
         ax.set_xlabel('cores')
-        ax.set_ylabel('throughput (tasks/sec)')
+        ax.set_ylabel('performance')
         ax.set_xlim([0, max(x) + 10])
         ax.set_ylim([0, max(y) + max(y)*.1])
 
